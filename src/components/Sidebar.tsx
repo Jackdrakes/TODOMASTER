@@ -4,6 +4,7 @@ import { Search, CheckSquare, ListTodo, ShoppingCart, Plane, Film, Home, Briefca
 import { useState } from 'react';
 import { Button } from './ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const menuItems = [
   { icon: CheckSquare, label: 'My Day' },
@@ -38,7 +39,13 @@ export default function Sidebar({username}: TodoDashboardProps) {
     <div className="w-64 bg-gray-900 shadow-lg text-gray-400">
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center">
-            <img src="https://static.vecteezy.com/system/resources/thumbnails/002/387/693/small_2x/user-profile-icon-free-vector.jpg" alt="User" className="w-10 h-10 rounded-full mr-3" />
+            <Image 
+              src="/images/profile.jpg" 
+              alt="User"
+              width={10} 
+              height={10}
+              className="w-10 h-10 rounded-full mr-3" />
+
             <span className="font-semibold  px-3">{username}</span>
         </div>
 

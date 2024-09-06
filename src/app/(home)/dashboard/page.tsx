@@ -4,7 +4,7 @@ import MainContent from '@/components/MainContent';
 
 import { getServerSession } from 'next-auth';
 import { redirect } from "next/navigation"
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import { TasksTable } from '@/components/TasksTable';
 
 const Page = async() => {

@@ -1,6 +1,6 @@
 'use client'
 
-const Page = async() => {
+const Page = () => {
     return (
         <div >
             Settings

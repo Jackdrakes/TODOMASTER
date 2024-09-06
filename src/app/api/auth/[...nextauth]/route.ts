@@ -29,7 +29,7 @@ const authOptions: NextAuthOptions = {
         // console.log('authorize -', user)
         
         if (user && (await bcrypt.compare(password, user.password)) ) { //user.password === password
-          return { id: user.id.toString(), email: user.email, username: user.username }; // Ensure the ID is a string if needed
+          return { id: user.id.toString(), email: user.email, username: user.username } as User;// Ensure the ID is a string if needed
         } else {
           return null; // Return null if authentication fails
         }
@@ -46,10 +46,12 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id; // Add user ID to token
-        token.username = user.username; // Add username to token
+        // console.log('token Jwt-', user)
+        const typedUser = user as User; // Cast user to User type
+        token.id = typedUser.id; // Add user ID to token
+        token.username = typedUser.username; // Add username to token
       }
-      // console.log("token - ", token)
+      
       return token;
     },
     async session({ session, token }) {
@@ -63,5 +65,4 @@ const authOptions: NextAuthOptions = {
 };
 
 const handler = NextAuth(authOptions);
-export {authOptions}
 export { handler as GET, handler as POST };
