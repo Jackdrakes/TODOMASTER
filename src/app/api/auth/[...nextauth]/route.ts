@@ -46,8 +46,7 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // console.log('token Jwt-', user)
-        const typedUser = user as User; // Cast user to User type
+        const typedUser = user as User; 
         token.id = typedUser.id; // Add user ID to token
         token.username = typedUser.username; // Add username to token
       }
@@ -57,7 +56,6 @@ const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       session.user.id = token.id; // Add user ID to session
       session.user.username = token.username; // Add username to session
-      // console.log("session user id -" , session)
       return session;
     }
   },

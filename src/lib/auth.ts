@@ -6,6 +6,12 @@ import bcrypt from "bcryptjs"; // For password hashing
 
 const prisma = new PrismaClient();
 
+interface User {
+  id: string; // Ensure this matches your Prisma User model
+  email: string;
+  username: string; 
+}
+
 export const authOptions: NextAuthOptions = {
     providers: [
       CredentialsProvider({
@@ -41,8 +47,9 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
       async jwt({ token, user }) {
         if (user) {
-          token.id = user.id; // Add user ID to token
-          token.username = user.username; // Add username to token
+          const typedUser = user as User; 
+          token.id = typedUser.id; // Add user ID to token
+          token.username = typedUser.username; // Add username to token
         }
         // console.log("token - ", token)
         return token;
