@@ -15,13 +15,11 @@ const Page = async() => {
   if (!session || !session.user) {
     redirect("/auth/sign-in"); 
   }
-  // console.log('home -session', session)
-  
-  const name = session.user.username
+  // console.log('home -session', )
 
   return (
     <div className="flex h-screen bg-gradient-to-b from-gray-900 to-gray-800">
-      <Sidebar username={name} />
+      <Sidebar username={session.user.username} userid={session.user.id}/>
       {/* <MainContent /> */}
 
       <TasksTable />

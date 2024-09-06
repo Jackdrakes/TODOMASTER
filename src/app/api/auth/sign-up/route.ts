@@ -29,9 +29,25 @@ export async function POST(request: Request) {
       },
     });
 
+    // Define default categories to create for the user
+    const defaultCategories = [
+      { categoryName: "My Day", userId: user.id, categoryIcon: "CheckSquare" },
+      { categoryName: "To-Do", userId: user.id, categoryIcon: "ListTodo"  },
+      { categoryName: "Groceries", userId: user.id, categoryIcon: "ShoppingCart"  },
+      { categoryName: "Travel", userId: user.id, categoryIcon: "Plane"  },
+      { categoryName: "Movies to Watch", userId: user.id, categoryIcon: "Film"  },
+      { categoryName: "Home", userId: user.id, categoryIcon: "Home"  },
+      { categoryName: "Work", userId: user.id, categoryIcon: "Briefcase"  },
+    ]
+
+    // Create default categories
+    const categories = await prisma.category.createMany({
+      data: defaultCategories,
+    });
+
     // Return a success response
-    console.log(user)
-    return NextResponse.json({ user }, { status: 201 });
+    // console.log(user)
+    return NextResponse.json({ user, categories }, { status: 201 });
   } catch (error) {
     console.log(error)
     return NextResponse.json({ error: "Registration failed" }, { status: 500 });

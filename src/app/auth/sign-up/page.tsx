@@ -4,7 +4,6 @@
 
 import React, { useState } from 'react';
 
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import { Mail, Lock, CircleUser } from 'lucide-react';
@@ -18,24 +17,6 @@ const SignUpPageRoute = () => {
   const [username, setUsername] = useState('')
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
-
-  
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null); 
-
-    const result = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
-  
-    if (result?.error) {
-      setError(result.error); // Set error message if authentication fails
-    } else {
-      router.push("/"); // Redirect to home page or a protected route
-    }
-  };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +32,6 @@ const SignUpPageRoute = () => {
     });
 
     if (response.ok) {
-      // Registration successful, redirect to sign-in page
       router.push("/auth/sign-in");
     } else {
       const errorData = await response.json();

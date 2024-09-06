@@ -8,26 +8,27 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  username String @unique
-  password String
-  email    String @unique
-  lists    List[]
+  id        String     @id @default(cuid())
+  username  String     @unique
+  password  String
+  email     String     @unique
+  categories Category[] 
 }
 
-model List {
-  id        String   @id @default(cuid())
-  userId    String
-  listName  String
-  user      User   @relation(fields: [userId], references: [id])
-  tasks     Task[]
+model Category {
+  id            String   @id @default(cuid())
+  userId        String
+  categoryName  String
+  categoryIcon  String
+  user          User     @relation(fields: [userId], references: [id])
+  tasks         Task[]
 }
 
 model Task {
   id          String    @id @default(cuid())
-  listId      String
+  categoryId  String    // Added categoryId field
   taskName    String
   description String?
-  completed   Boolean @default(false)
-  list        List   @relation(fields: [listId], references: [id])
+  completed   Boolean   @default(false)
+  category    Category  @relation(fields: [categoryId], references: [id]) 
 }
