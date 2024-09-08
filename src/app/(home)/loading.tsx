@@ -1,4 +1,4 @@
-// loading.tsx
+// app/loading.tsx
 import React from 'react';
 import { Loader } from 'lucide-react';
 

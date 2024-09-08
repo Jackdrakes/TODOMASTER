@@ -23,7 +23,6 @@ const iconMap: { [key: string]: React.ComponentType<React.SVGProps<SVGSVGElement
   Home,
   Briefcase,
   Settings,
-  // Add more icons as needed
 };
 
 interface TodoDashboardProps {
