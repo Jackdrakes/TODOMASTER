@@ -22,9 +22,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { Pagination } from "@/components/ui/pagination";
 import { useEffect, useState } from "react";
-import { ChevronDown, MoreHorizontal, MoreVertical } from "lucide-react";
+import { ChevronDown, MoreVertical } from "lucide-react";
 import TaskForm from "@/components/AddTaskForm";
 
 interface Task {

@@ -26,10 +26,10 @@ const authOptions: NextAuthOptions = {
         });
         // console.log('authorize -', user)
         
-        if (user && (await bcrypt.compare(password, user.password)) ) { //user.password === password
-          return { id: user.id.toString(), email: user.email, username: user.username } as User;// Ensure the ID is a string if needed
+        if (user && (await bcrypt.compare(password, user.password)) ) { 
+          return { id: user.id.toString(), email: user.email, username: user.username } as User;
         } else {
-          return null; // Return null if authentication fails
+          return null; 
         }
 
       }
@@ -45,15 +45,15 @@ const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         const typedUser = user as User; 
-        token.id = typedUser.id; // Add user ID to token
-        token.username = typedUser.username; // Add username to token
+        token.id = typedUser.id; 
+        token.username = typedUser.username; 
       }
       
       return token;
     },
     async session({ session, token }) {
-      session.user.id = token.id; // Add user ID to session
-      session.user.username = token.username; // Add username to session
+      session.user.id = token.id; 
+      session.user.username = token.username; 
       return session;
     }
   },

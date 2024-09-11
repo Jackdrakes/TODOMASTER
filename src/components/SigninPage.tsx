@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 import { signIn, useSession } from "next-auth/react";
-import { useRouter, redirect } from "next/navigation";
+import { useRouter,  } from "next/navigation";
 
 import { Mail, Lock } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -17,21 +17,15 @@ const SignInPage = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const { data: session, status } = useSession()
+  const { status } = useSession()
 
   if (status === "loading") {
       return <Loading/>
-  }
-    
+  }    
   if (status === "authenticated") {
-      redirect("/dashboard"); 
+      router.push("/dashboard"); 
   }
 
-
-  const handleSubmit = () => {
-    // Add your sign-in logic here
-    console.log('Sign-in attempt:', { email, password });
-  };
   
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
