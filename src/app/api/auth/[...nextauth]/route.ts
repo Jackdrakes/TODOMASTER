@@ -1,9 +1,7 @@
 import NextAuth, {NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs"; // For password hashing
-const prisma = new PrismaClient();
-
+import prisma from "@/lib/db";
 
 interface User {
   id: string; // Ensure this matches your Prisma User model

@@ -30,7 +30,8 @@ interface TodoDashboardProps {
   userid: string;
 }
 
-interface Category {
+export interface Category {
+  id: string;
   categoryName: string;
   categoryIcon: string; 
 }
@@ -39,6 +40,8 @@ interface Category {
 export default function Sidebar({username, userid}: TodoDashboardProps)  {
 
   const [data, setData] = useState<Category[]>([]);
+
+  
 
   useEffect(() => {
     const categoriesdata = async() => {
@@ -88,16 +91,15 @@ export default function Sidebar({username, userid}: TodoDashboardProps)  {
       </div>
 
       <nav>
-        {Array.isArray(data) && data.map((item, index) => {
+        {data && data.map((item, index) => {
         const IconComponent = iconMap[item.categoryIcon]; 
         return (  
-          <a key={index} 
-            href={'#'}
+          <Link key={index} 
+            href={ `/categories/${item.id}` || '#'}
             className="flex items-center px-4 py-2 text-gray-400 hover:bg-gray-600 hover:text-slate-300">
-            {/* <item.categoryIcon className="w-5 h-5 mr-3" /> */}
             {IconComponent && <IconComponent className="w-5 h-5 mr-3" />}
             <span>{item.categoryName}</span>
-          </a>
+          </Link>
         )})}
       </nav>
 
@@ -118,5 +120,5 @@ export default function Sidebar({username, userid}: TodoDashboardProps)  {
       </div>
 
     </div>
-  );
+  )
 }

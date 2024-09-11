@@ -2,19 +2,31 @@
 
 import React, { useState } from 'react';
 
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter, redirect } from "next/navigation";
 
 import { Mail, Lock } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import Loading from '@/app/(home)/loading';
 
 const SignInPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  const { data: session, status } = useSession()
+
+  if (status === "loading") {
+      return <Loading/>
+  }
+    
+  if (status === "authenticated") {
+      redirect("/dashboard"); 
+  }
+
 
   const handleSubmit = () => {
     // Add your sign-in logic here
@@ -33,9 +45,9 @@ const SignInPage = () => {
     
 
     if (result?.error) {
-      setError(result.error); // Set error message if authentication fails
+      setError(result.error);
     } else {
-      router.push("/dashboard"); // Redirect to home page or a protected route
+      router.push("/dashboard"); 
     }
   };
 

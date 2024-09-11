@@ -9,3 +9,5 @@ export interface Session {
     user: User;
     expires: string;
 }
+
+export type Priority = 'LOW' | 'MEDIUM' | 'HIGH';
