@@ -17,3 +17,14 @@ export interface Category {
     categoryName: string;
     categoryIcon: string; 
 }
+
+export interface Task {
+    id: string;
+    taskName: string;
+    title?: string;
+    status: string;
+    description: string;
+    priority?: "LOW"| "MEDIUM" | "HIGH";
+    completed: boolean
+    // category: string;
+  }

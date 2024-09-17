@@ -25,12 +25,12 @@ import { useToast } from "@/hooks/use-toast"
 
 import { LoaderCircle, Plus } from "lucide-react";
 import { useSession } from 'next-auth/react';
-import { Category } from '@/types/types';
+import { Category, Task } from '@/types/types';
 
-interface TaskFormProps {
-    closeSheet?: () => void;
-    closeDrawer?: () => void;
-  }
+// interface TaskFormProps {
+//     closeSheet?: () => void;
+//     closeDrawer?: () => void;
+//   }
   
 interface TaskFormData {
     title: string;
@@ -39,8 +39,11 @@ interface TaskFormData {
     priority: 'Low' | 'Medium' | 'High';
 }
   
+interface TaskFormProps {
+  taskCallback: (data: Task[]) => void;
+}
 
-const TaskForm = () => {
+const TaskForm = ({taskCallback}: TaskFormProps) => {
   
   const [taskName, setTaskName] = useState<string>('')
   const [description, setDescription] = useState<string>('');
@@ -75,7 +78,7 @@ const TaskForm = () => {
     e.preventDefault()
     setLoading(true)
 
-    const result = await fetch(`/api/tasks/${categoryid}`, {
+    const response = await fetch(`/api/tasks/${categoryid}`, {
       method: "POST",
       headers:{
         "Content-Type": "application/json",
@@ -83,7 +86,11 @@ const TaskForm = () => {
       body: JSON.stringify({ taskName, description, priority, categoryid})
     });
 
+    const updatedTask = await response.json()
+    taskCallback(updatedTask)
+
     toast({
+      variant: 'default',
       description: "Task Added, work on it",
     })
 

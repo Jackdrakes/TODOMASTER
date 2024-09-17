@@ -7,17 +7,10 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { useEffect, useState } from "react";
 import { ChevronDown, MoreVertical } from "lucide-react";
 import TaskForm from "@/components/AddTaskForm";
+import {Task} from "@/types/types"
+import { toast } from "@/hooks/use-toast";
 
-interface Task {
-  id: string;
-  taskName: string;
-  title?: string;
-  status: string;
-  description: string;
-  priority?: "LOW"| "MEDIUM" | "HIGH";
-  completed: boolean
-  // category: string;
-}
+
 
 interface TaskProps {
   task?: Task[];
@@ -32,6 +25,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
 
   const [Task, setTask] = useState<Task[]>([])
   const [selctedpriority, setSelctedpriority] = useState<string>("")
+  const [filter, setFilter] = useState("");
 
 
   useEffect(() => {
@@ -54,9 +48,26 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
 
     fetchTasks();
   }, [categoryId,]);
+
+  const handleDeleteTask = async (id: string) => {
+    try {
+      const response = await fetch(`/api/tasks/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete task');
+      }
+      setTask(Task.filter(task => task.id !== id));
+    } catch (error) {
+      console.error(error)
+    }
+
+    toast({
+      variant: 'destructive',
+      description: "Task Deleted",
+    })
+  }
   
-  
-  const [filter, setFilter] = useState("");
 
   const handleCheckboxChange = (taskId: string) => {
     setTask((prevTasks) =>
@@ -66,10 +77,13 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
     );
   };
 
+  const handleCallback = (updatedTask: Task[]) => {
+    setTask(updatedTask)
+  }
 
   return (
     <div className="flex-1 p-8 bg-gray-300">
-      <TaskForm />
+       <TaskForm taskCallback={handleCallback}  /> 
       
       <div className="flex justify-between items-center mb-4">
         <Input 
@@ -81,11 +95,11 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
         <div className="flex space-x-2">
 
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          {/* <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
-          </DropdownMenuTrigger>
+          </DropdownMenuTrigger> */}
           {/* <DropdownMenuContent align="end">
             {table
               .getAllColumns()
@@ -137,7 +151,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
             <TableHead className="w-[50px]">Select</TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Description</TableHead>
-            <TableHead>Status</TableHead>
+            {/* <TableHead>Status</TableHead> */}
             <TableHead>Priority</TableHead>
           </TableRow>
         </TableHeader>
@@ -155,7 +169,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
                 </TableCell>
                 <TableCell>{task.taskName}</TableCell>
                 <TableCell>{task.description}</TableCell>
-                <TableCell>{task.status}</TableCell>
+                {/* <TableCell>{task.status}</TableCell> */}
                 <TableCell>{task.priority}</TableCell>
 
                 <TableCell>
@@ -171,7 +185,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
                       <DropdownMenuItem>
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-rose-500">Delete</DropdownMenuItem>
+                      <DropdownMenuItem onClick={()=>(handleDeleteTask(task.id))} className="text-rose-500">Delete</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
