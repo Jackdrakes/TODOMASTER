@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 
 import { useRouter } from "next/navigation";
 
-import { Mail, Lock, CircleUser } from 'lucide-react';
+import { Mail, Lock, CircleUser, LoaderCircle } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -16,11 +16,13 @@ const SignUpPageRoute = () => {
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null); 
+    setLoading(true)
 
     // Send a POST request to the API to create a new user
     const response = await fetch("/api/auth/sign-up", {
@@ -79,7 +81,7 @@ const SignUpPageRoute = () => {
               />
             </div>
             <Button onClick={handleSignUp} className="w-full">
-              Sign Up
+              {loading ? <LoaderCircle className="w-5 h-5 animate-spin text-white" /> : <p>Sign Up</p>}
             </Button>
           </div>
         </CardContent>

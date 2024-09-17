@@ -1,6 +1,6 @@
 // types.ts
 export interface User {
-    id: string; // Ensure this matches your Prisma User model
+    id: string; 
     email: string;
     username: string; 
 }
@@ -11,3 +11,9 @@ export interface Session {
 }
 
 export type Priority = 'LOW' | 'MEDIUM' | 'HIGH';
+
+export interface Category {
+    id: string;
+    categoryName: string;
+    categoryIcon: string; 
+}

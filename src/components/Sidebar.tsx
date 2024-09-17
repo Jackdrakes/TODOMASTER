@@ -2,10 +2,9 @@
 'use client'
 import { Search, CheckSquare, ListTodo, ShoppingCart, Plane, Film, Home, Briefcase, ChevronRight, ChevronLeft, Settings } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Button } from './ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-
+import { Category } from '@/types/types';
 
 const workspaces = [
   { name: 'Personal Projects' },
@@ -28,12 +27,6 @@ const iconMap: { [key: string]: React.ComponentType<React.SVGProps<SVGSVGElement
 interface TodoDashboardProps {
   username: string;
   userid: string;
-}
-
-export interface Category {
-  id: string;
-  categoryName: string;
-  categoryIcon: string; 
 }
 
 
