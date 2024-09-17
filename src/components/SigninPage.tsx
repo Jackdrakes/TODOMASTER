@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { signIn, useSession } from "next-auth/react";
 import { useRouter,  } from "next/navigation";
 
-import { Mail, Lock } from 'lucide-react';
+import { Mail, Lock, LoaderCircle } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ const SignInPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter();
 
   const { status } = useSession()
@@ -30,19 +31,15 @@ const SignInPage = () => {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null); // Reset error state
+    setLoading(true)
 
-    const result = await signIn("credentials", {
-      redirect: false,
+    await signIn("credentials", {
+      callbackUrl: '/dashboard',
+      redirect: true,
       email,
       password,
     });
     
-
-    if (result?.error) {
-      setError(result.error);
-    } else {
-      router.push("/dashboard"); 
-    }
   };
 
 
@@ -75,7 +72,7 @@ const SignInPage = () => {
               />
             </div>
             <Button onClick={handleSignIn} className="w-full">
-              Sign In
+              {loading ? <LoaderCircle className="w-5 h-5 animate-spin text-white" /> : <p>Sign In</p>}
             </Button>
 
             {error && <p className="text-red-500 text-center mt-2">{error}</p>}

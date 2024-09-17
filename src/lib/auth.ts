@@ -1,13 +1,13 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs"; // For password hashing
+import bcrypt from "bcryptjs"; 
 
 
 const prisma = new PrismaClient();
 
 interface User {
-  id: string; // Ensure this matches your Prisma User model
+  id: string; 
   email: string;
   username: string; 
 }
@@ -27,10 +27,10 @@ export const authOptions: NextAuthOptions = {
           const user = await prisma.user.findUnique({
             where: { email }
           });
-          // console.log('authorize -', user)
+
           
-          if (user && (await bcrypt.compare(password, user.password)) ) { //user.password === password
-            return { id: user.id.toString(), email: user.email, username: user.username }; // Ensure the ID is a string if needed
+          if (user && (await bcrypt.compare(password, user.password)) ) { 
+            return { id: user.id.toString(), email: user.email, username: user.username }; 
           } else {
             return null; // Return null if authentication fails
           }
@@ -48,16 +48,14 @@ export const authOptions: NextAuthOptions = {
       async jwt({ token, user }) {
         if (user) {
           const typedUser = user as User; 
-          token.id = typedUser.id; // Add user ID to token
-          token.username = typedUser.username; // Add username to token
+          token.id = typedUser.id; 
+          token.username = typedUser.username; 
         }
-        // console.log("token - ", token)
         return token;
       },
       async session({ session, token }) {
-        session.user.id = token.id; // Add user ID to session
-        session.user.username = token.username; // Add username to session
-        // console.log("session user id -" , session)
+        session.user.id = token.id; 
+        session.user.username = token.username; 
         return session;
       }
     },

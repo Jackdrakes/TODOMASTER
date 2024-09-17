@@ -1,27 +1,9 @@
 'use client'
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
 import { useEffect, useState } from "react";
 import { ChevronDown, MoreVertical } from "lucide-react";
 import TaskForm from "@/components/AddTaskForm";
@@ -33,6 +15,7 @@ interface Task {
   status: string;
   description: string;
   priority?: "LOW"| "MEDIUM" | "HIGH";
+  completed: boolean
   // category: string;
 }
 
@@ -40,72 +23,52 @@ interface TaskProps {
   task?: Task[];
 }
 
+const defaultasks = [
+  { id: "TASK-8782", taskName: "string", description: "You can't compress the program without quantifying the open-source SSD...", status: "In Progress", completed: true },
+  { id: "TASK-7878", taskName: "string", description: "Try to calculate the EXE feed, maybe it will index the multi-byte pixel!", status: "Backlog",completed: false, },
+]
+
 export function TasksTable({categoryId}: {categoryId?: string}) {
 
   const [Task, setTask] = useState<Task[]>([])
+  const [selctedpriority, setSelctedpriority] = useState<string>("")
 
-  const [defaultasks, setTasks] = useState<Task[]>([
-    { id: "TASK-8782", taskName: "string", description: "You can't compress the program without quantifying the open-source SSD...", status: "In Progress" },
-    { id: "TASK-7878", taskName: "string", description: "Try to calculate the EXE feed, maybe it will index the multi-byte pixel!", status: "Backlog" },
-  ]);
-
-  const tasks = categoryId ? Task : defaultasks
 
   useEffect(() => {
     const fetchTasks = async () => {
-      try {
-        const response = await fetch(`/api/tasks/${categoryId}`);
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch tasks');
+      if (categoryId) {
+        try {
+          const response = await fetch(`/api/tasks/${categoryId}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch tasks");
+          }
+          const data = await response.json();
+          setTask(data);
+        } catch (err) {
+          console.error(err);
         }
-
-        const data = await response.json();
-        setTask(data);
-      } catch (err) {
-        // setError(err.message);
-      } finally {
-        // setLoading(false);
+      } else {
+        setTask(defaultasks);
       }
     };
 
     fetchTasks();
-  }, [categoryId]);
+  }, [categoryId,]);
   
   
   const [filter, setFilter] = useState("");
-  // const [newTask, setNewTask] = useState<Omit<Task, 'id'>>({
-  //   type: "",
-  //   title: "",
-  //   status: "",
-  //   // priority: "",
-  // });
 
+  const handleCheckboxChange = (taskId: string) => {
+    setTask((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
 
-
-  // const handleAddTask = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch('/api/tasks', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(newTask),
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error('Failed to add task');
-  //     }
-  //     const addedTask: Task = await response.json();
-  //     setTasks([...tasks, addedTask]);
-  //     setNewTask({ type: "", title: "", status: "", priority: "" });
-  //   } catch (error) {
-  //     console.error('Error adding task:', error);
-  //   }
-  // };
 
   return (
-    <div className="flex-1 p-8 bg-gray-300"> {/* bg-white dark: */}
+    <div className="flex-1 p-8 bg-gray-300">
       <TaskForm />
       
       <div className="flex justify-between items-center mb-4">
@@ -143,7 +106,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
               })}
           </DropdownMenuContent> */}
         </DropdownMenu>
-
+          {/* 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">Status</Button>
@@ -153,15 +116,16 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
               <DropdownMenuItem>Backlog</DropdownMenuItem>
               <DropdownMenuItem>Done</DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">Priority</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>High</DropdownMenuItem>
-              <DropdownMenuItem>Medium</DropdownMenuItem>
-              <DropdownMenuItem>Low</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => (setSelctedpriority("HIGH"))}>High</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => (setSelctedpriority("MEDIUM"))}>Medium</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => (setSelctedpriority("LOW"))}>Low</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -172,7 +136,6 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
           <TableRow>
             <TableHead className="w-[50px]">Select</TableHead>
             <TableHead>Title</TableHead>
-            {/* <TableHead>Type</TableHead> */}
             <TableHead>Description</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Priority</TableHead>
@@ -180,13 +143,17 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
         </TableHeader>
 
         <TableBody>
-          {Array.isArray(tasks) && tasks
+          {Array.isArray(Task) && Task
             .filter((task) => task.taskName.toLowerCase().includes(filter.toLowerCase()))
             .map((task) => (
               <TableRow key={task.id}>
-                <TableCell><input type="checkbox" /></TableCell>
+                <TableCell>
+                  <Checkbox
+                    checked={task.completed}
+                    onCheckedChange={() => handleCheckboxChange(task.id)}
+                  />
+                </TableCell>
                 <TableCell>{task.taskName}</TableCell>
-                {/* <TableCell>{task.type}</TableCell> */}
                 <TableCell>{task.description}</TableCell>
                 <TableCell>{task.status}</TableCell>
                 <TableCell>{task.priority}</TableCell>
@@ -202,10 +169,9 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
                       <DropdownMenuItem>
-                        Copy payment ID
+                        Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem>View customer</DropdownMenuItem>
-                      <DropdownMenuItem>View payment details</DropdownMenuItem>
+                      <DropdownMenuItem className="text-rose-500">Delete</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
@@ -215,11 +181,6 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
         </TableBody>
       </Table>
 
-      {/* Pagination
-      <div className="flex justify-between items-center mt-4">
-        <span>Rows per page</span>
-        <Pagination total={100} currentPage={1} pageSize={10} />
-      </div> */}
     </div>
   );
 }

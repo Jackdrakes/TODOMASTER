@@ -1,11 +1,11 @@
 // app/(home)layout.tsx
 'use client'
 import { Suspense } from 'react';
-import { SessionProvider, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import Loading from '@/app/(home)/loading';
 import Sidebar from '@/components/Sidebar';
-import { TasksTable } from '@/components/TasksTable';
+import { Toaster } from "@/components/ui/toaster";
 
 
 export default function DasahboardLayout({
@@ -14,10 +14,7 @@ export default function DasahboardLayout({
     children: React.ReactNode;
   }>)  {
 
-  
     const { data: session, status } = useSession()
-
-    // console.log()
 
     if (status === "loading") {
       return <Loading/>
@@ -32,13 +29,13 @@ export default function DasahboardLayout({
     <html>
       <body>
         <Suspense fallback={<Loading />}>
-        <div className='flex h-screen'>
-          <Sidebar userid={session?.user.id} username={session?.user.username}/>
-          <div className="flex w-full">
-   
-            {children}
+          <div className='flex h-screen'>
+            <Sidebar userid={session?.user.id} username={session?.user.username}/>
+            <div className="flex w-full bg-gray-300">
+              {children}
+            </div>
+            <Toaster></Toaster>
           </div>
-        </div>
         </Suspense>
 
       </body>

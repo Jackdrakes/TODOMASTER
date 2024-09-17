@@ -21,10 +21,11 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus } from "lucide-react";
+import { useToast } from "@/hooks/use-toast"
+
+import { LoaderCircle, Plus } from "lucide-react";
 import { useSession } from 'next-auth/react';
-import { Category } from '@/components/Sidebar';
-import { Session } from '@/types/types';
+import { Category } from '@/types/types';
 
 interface TaskFormProps {
     closeSheet?: () => void;
@@ -40,18 +41,17 @@ interface TaskFormData {
   
 
 const TaskForm = () => {
-  // Form state initialized with default values
-  // const [formData, setFormData] = useState<TaskFormData>({ title: '',
-  //   description: '',
-  //   // status: 'To Do',
-  //   priority: 'Medium',
-  // });
+  
   const [taskName, setTaskName] = useState<string>('')
   const [description, setDescription] = useState<string>('');
   const [priority, setPriority] = useState<'LOW' | 'MEDIUM' | 'HIGH'>('LOW');
   const [categoryid, setCategoryid] = useState<string>('')
-  const { data, status } = useSession()
+  const { data, } = useSession()
   const [categorylist, setCategorylist] = useState<Category[]>([]);
+
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const {toast} = useToast()
 
   useEffect(() => {
     const categoriesdata = async() => {
@@ -73,6 +73,7 @@ const TaskForm = () => {
 
   const handleAddTask = async(e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
 
     const result = await fetch(`/api/tasks/${categoryid}`, {
       method: "POST",
@@ -82,6 +83,12 @@ const TaskForm = () => {
       body: JSON.stringify({ taskName, description, priority, categoryid})
     });
 
+    toast({
+      description: "Task Added, work on it",
+    })
+
+    setLoading(false)
+    
   }
 
   return (
@@ -161,7 +168,9 @@ const TaskForm = () => {
 
         <SheetFooter>
           <SheetClose asChild>
-            <Button onClick={handleAddTask} type="submit">Let&lsquo;s Do This!</Button>
+            <Button onClick={handleAddTask}  type='submit'>
+              {loading ? <LoaderCircle className="w-5 h-5 animate-spin text-white" /> : <p>Let&lsquo;s Do This!</p>}
+            </Button>
           </SheetClose>
         </SheetFooter>
 

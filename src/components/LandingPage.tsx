@@ -27,10 +27,10 @@ const LandingPage = () => {
 
         <div className="mt-20">
           <Image 
-            src="/images/dashboard.png"  // Path to your image
+            src="/images/dashboard.png"  
             alt="TodoMaster Dashboard"
-            width={1200}  // Set the width
-            height={800}  // Set the height
+            width={1200}  
+            height={800}  
             className="rounded-lg shadow-2xl mx-auto" 
           />
         </div>

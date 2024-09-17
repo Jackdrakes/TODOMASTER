@@ -1,6 +1,6 @@
 import NextAuth, {NextAuthOptions} from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs"; // For password hashing
+import bcrypt from "bcryptjs"; 
 import prisma from "@/lib/db";
 
 interface User {
@@ -20,11 +20,9 @@ const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         const { email, password } = credentials as { email: string; password: string };
 
-        // Find user in the database
         const user = await prisma.user.findUnique({
           where: { email }
         });
-        // console.log('authorize -', user)
         
         if (user && (await bcrypt.compare(password, user.password)) ) { 
           return { id: user.id.toString(), email: user.email, username: user.username } as User;
