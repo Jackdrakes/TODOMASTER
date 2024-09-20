@@ -39,7 +39,36 @@ export async function POST(req: NextRequest, ){
                 categoryId: categoryid,
             }
         })
-        
+
+        const updatedTasks = await prisma.task.findMany({
+            where: { categoryId: categoryid },
+            select: { 
+                id: true,
+                taskName: true,
+                description: true,
+                priority: true,
+                completed: true,
+            }
+        });
+
+        return NextResponse.json(updatedTasks,{status: 200})
+    } catch (error) {
+        console.log(error)
+        return NextResponse.json({error: 'Failed to add tasks'}, {status: 500})
+    }
+}
+
+export async function DELETE(request: NextRequest,{params}: {params:{categoryid:string}}) {
+    const taskid = params.categoryid
+    console.log("request", taskid)
+
+    try {
+        await prisma.task.delete({
+            where:{
+                id: taskid
+            }
+        })
+
         return NextResponse.json({message: 'Successfully Added task'}, {status: 200})
     } catch (error) {
         console.log(error)
