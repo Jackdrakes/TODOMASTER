@@ -40,7 +40,7 @@ interface TaskFormData {
 }
   
 interface TaskFormProps {
-  taskCallback: (data: Task[]) => void;
+  taskCallback: (data: Task) => void;
 }
 
 const TaskForm = ({taskCallback}: TaskFormProps) => {
@@ -92,6 +92,7 @@ const TaskForm = ({taskCallback}: TaskFormProps) => {
     toast({
       variant: 'default',
       description: "Task Added, work on it",
+      duration: 2500,
     })
 
     setLoading(false)

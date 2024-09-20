@@ -5,16 +5,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 import { useEffect, useState } from "react";
-import { ChevronDown, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import TaskForm from "@/components/AddTaskForm";
 import {Task} from "@/types/types"
 import { toast } from "@/hooks/use-toast";
 
 
-
-interface TaskProps {
-  task?: Task[];
-}
 
 const defaultasks = [
   { id: "TASK-8782", taskName: "string", description: "You can't compress the program without quantifying the open-source SSD...", status: "In Progress", completed: true },
@@ -23,7 +19,7 @@ const defaultasks = [
 
 export function TasksTable({categoryId}: {categoryId?: string}) {
 
-  const [Task, setTask] = useState<Task[]>([])
+  const [Tasks, setTasks] = useState<Task[]>([])
   const [selctedpriority, setSelctedpriority] = useState<string>("")
   const [filter, setFilter] = useState("");
 
@@ -37,12 +33,12 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
             throw new Error("Failed to fetch tasks");
           }
           const data = await response.json();
-          setTask(data);
+          setTasks(data);
         } catch (err) {
           console.error(err);
         }
       } else {
-        setTask(defaultasks);
+        setTasks(defaultasks);
       }
     };
 
@@ -57,7 +53,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
       if (!response.ok) {
         throw new Error('Failed to delete task');
       }
-      setTask(Task.filter(task => task.id !== id));
+      setTasks(Tasks.filter(task => task.id !== id));
     } catch (error) {
       console.error(error)
     }
@@ -65,25 +61,26 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
     toast({
       variant: 'destructive',
       description: "Task Deleted",
+      duration: 2000,
     })
   }
   
 
   const handleCheckboxChange = (taskId: string) => {
-    setTask((prevTasks) =>
+    setTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === taskId ? { ...task, completed: !task.completed } : task
       )
     );
   };
 
-  const handleCallback = (updatedTask: Task[]) => {
-    setTask(updatedTask)
+  const handleCallback = (updatedTask: Task) => {
+    setTasks((prevTasks)=>[...prevTasks, updatedTask]) 
   }
 
   return (
     <div className="flex-1 p-8 bg-gray-300">
-       <TaskForm taskCallback={handleCallback}  /> 
+      <TaskForm taskCallback={handleCallback}  /> 
       
       <div className="flex justify-between items-center mb-4">
         <Input 
@@ -157,7 +154,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
         </TableHeader>
 
         <TableBody>
-          {Array.isArray(Task) && Task
+          {Array.isArray(Tasks) && Tasks
             .filter((task) => task.taskName.toLowerCase().includes(filter.toLowerCase()))
             .map((task) => (
               <TableRow key={task.id}>
