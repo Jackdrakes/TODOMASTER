@@ -2,11 +2,11 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import TaskForm from "@/components/AddTaskForm";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 import { useEffect, useState } from "react";
 import { MoreVertical } from "lucide-react";
-import TaskForm from "@/components/AddTaskForm";
 import {Task} from "@/types/types"
 import { toast } from "@/hooks/use-toast";
 
@@ -66,12 +66,31 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
   }
   
 
-  const handleCheckboxChange = (taskId: string) => {
+  const handleCheckboxChange = async (taskId: string) => {
+
+    const taskToUpdate = Tasks.find((task)=> task.id === taskId)
+
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === taskId ? { ...task, completed: !task.completed } : task
       )
     );
+
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`,{
+        method: 'PATCH',
+        headers:{
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({completed: !taskToUpdate?.completed })
+      })
+
+      if(!response.ok){
+        throw new Error('Failed to updated completion status of the task')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const handleCallback = (updatedTask: Task) => {
@@ -155,7 +174,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
 
         <TableBody>
           {Array.isArray(Tasks) && Tasks
-            .filter((task) => task.taskName.toLowerCase().includes(filter.toLowerCase()))
+            .filter((task) => task?.taskName?.toLowerCase().includes(filter.toLowerCase()))
             .map((task) => (
               <TableRow key={task.id}>
                 <TableCell>

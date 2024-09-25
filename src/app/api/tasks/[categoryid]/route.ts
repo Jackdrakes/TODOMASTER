@@ -15,6 +15,7 @@ export async function GET(request:NextRequest, {params}: {params: { categoryid: 
                 taskName: true,
                 description: true,
                 priority: true,
+                status: true,
                 completed: true,
             }
         });
@@ -37,6 +38,7 @@ export async function POST(req: NextRequest, ){
                 description,
                 priority,
                 categoryId: categoryid,
+                // status: 'todo',
             }
         })
         
@@ -47,9 +49,37 @@ export async function POST(req: NextRequest, ){
     }
 }
 
+export async function PATCH(request: NextRequest, {params}: {params:{categoryid: string}}) {
+    const taskid = params.categoryid
+    try {      
+        const task = await prisma.task.findUnique({
+            where:{
+                id: taskid,
+            },
+        })
+
+        if(!task){
+            return NextResponse.json({error: "Task not Found"}, {status: 400})
+        }
+
+        const updatedTask = await prisma.task.update({
+            where: {
+                id: taskid,
+            },
+            data:{
+                completed: !task.completed
+            }
+        })
+
+        return NextResponse.json({status:200})
+    } catch (error) {
+        console.log(error)
+        return NextResponse.json({error: 'Failed to update completion status'}, {status:500})
+    }
+}
+
 export async function DELETE(request: NextRequest,{params}: {params:{categoryid:string}}) {
     const taskid = params.categoryid
-    console.log("request", taskid)
 
     try {
         await prisma.task.delete({
@@ -58,7 +88,7 @@ export async function DELETE(request: NextRequest,{params}: {params:{categoryid:
             }
         })
 
-        return NextResponse.json({message: 'Successfully Added task'}, {status: 200})
+        return NextResponse.json({message: 'Successfully Deleted task'}, {status: 200})
     } catch (error) {
         console.log(error)
         return NextResponse.json({error: 'Failed to add tasks'}, {status: 500})
