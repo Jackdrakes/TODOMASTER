@@ -1,10 +1,11 @@
 // components/Sidebar.tsx
 'use client'
-import { Search, CheckSquare, ListTodo, ShoppingCart, Plane, Film, Home, Briefcase, ChevronRight, ChevronLeft, Settings } from 'lucide-react';
+import { Search, CheckSquare, ListTodo, ShoppingCart, Plane, Film, Home, Briefcase, ChevronRight, ChevronLeft, Settings, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Category } from '@/types/types';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const workspaces = [
   { name: 'Personal Projects' },
@@ -55,15 +56,13 @@ export default function Sidebar({username, userid}: TodoDashboardProps)  {
   }, [userid]);
   
   return (
-    <div className="w-64 bg-gray-900 shadow-lg text-gray-400">
+    <div className="w-64  bg-gray-900 shadow-lg  min-h-screen fixed text-gray-400">
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center">
-            <Image 
-              src="/images/profile.jpg" 
-              alt="User"
-              width={10} 
-              height={10}
-              className="w-10 h-10 rounded-full mr-3" />
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" width={5} height={5} alt="@shadcn" />
+              <AvatarFallback className='bg-black text-white'>T</AvatarFallback>
+            </Avatar>
 
             <span className="font-semibold  px-3">{username}</span>
         </div>
@@ -76,12 +75,12 @@ export default function Sidebar({username, userid}: TodoDashboardProps)  {
 
   
 
-      <div className="px-4 mb-4">
+      {/* <div className="px-4 mb-4">
         <div className="flex items-center bg-gray-100 rounded-md p-2">
           <Search className="text-gray-400 w-5 h-5 mr-2" />
           <input type="text" placeholder="Search" className="bg-transparent outline-none w-full" />
         </div>
-      </div>
+      </div> */}
 
       <nav>
         {data && data.map((item, index) => {
@@ -97,20 +96,21 @@ export default function Sidebar({username, userid}: TodoDashboardProps)  {
       </nav>
 
       {/* Workspaces Section */}
-      <div className="mt-6 px-4">
-        <h2 className="text-gray-300 text-sm font-semibold mb-2">Workspaces</h2>
+      {/* <div className="mt-6 px-4">
+        <h2 className="text-gray-300 flex text-sm font-semibold mb-2 items-center justify-between">Workspaces <Plus className='w-4 h-4'/></h2>
+        
         <div>
           {workspaces.map((workspace, index) => (
             <a
               key={index}
-              href="#"
+              href={`/workspace`}
               className="block px-4 py-2 text-gray-400 hover:bg-gray-500 rounded-md"
             >
               {workspace.name}
             </a>
           ))}
         </div>
-      </div>
+      </div> */}
 
     </div>
   )

@@ -24,7 +24,7 @@ export interface Task {
     title?: string;
     status: string;
     description: string;
-    priority?: "LOW"| "MEDIUM" | "HIGH";
+    priority?: "Low"| "Medium" | "High";
     completed: boolean
     // category: string;
   }

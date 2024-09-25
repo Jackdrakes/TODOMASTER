@@ -1,6 +1,7 @@
 // app/categories/[id]/page.tsx
 // 'use client'
 import { TasksTable } from '@/components/TasksTable';
+import { CategoryPages } from '@/components/categoryPage';
 
 
 const CategoryPage = async ({ params }: { params: { id: string } }) => {
@@ -8,8 +9,10 @@ const CategoryPage = async ({ params }: { params: { id: string } }) => {
 
   return (
 
-    <TasksTable categoryId={categoryId} />
-   
+    // <TasksTable categoryId={categoryId} />
+    <div className='container p-8 mx-auto py-10'>
+      <CategoryPages categoryId={categoryId} />
+    </div>
   );
 };
 

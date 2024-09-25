@@ -47,7 +47,7 @@ const TaskForm = ({taskCallback}: TaskFormProps) => {
   
   const [taskName, setTaskName] = useState<string>('')
   const [description, setDescription] = useState<string>('');
-  const [priority, setPriority] = useState<'LOW' | 'MEDIUM' | 'HIGH'>('LOW');
+  const [priority, setPriority] = useState<'Low' | 'Medium' | 'High'>('Low');
   const [categoryid, setCategoryid] = useState<string>('')
   const { data, } = useSession()
   const [categorylist, setCategorylist] = useState<Category[]>([]);
@@ -144,14 +144,14 @@ const TaskForm = ({taskCallback}: TaskFormProps) => {
 
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="priority" className="text-right">Priority</Label>
-            <Select onValueChange={(value) => setPriority(value as 'LOW' | 'MEDIUM' | "HIGH")}>        
+            <Select onValueChange={(value) => setPriority(value as 'Low' | 'Medium' | "High")}>        
             <SelectTrigger className="col-span-3">
               <SelectValue placeholder="Select Priority" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="LOW">Low</SelectItem>
-              <SelectItem value="MEDIUM">Medium</SelectItem>
-              <SelectItem value="HIGH">High</SelectItem>
+              <SelectItem value="Low">Low</SelectItem>
+              <SelectItem value="Medium">Medium</SelectItem>
+              <SelectItem value="High">High</SelectItem>
             </SelectContent>
             </Select>
           </div>

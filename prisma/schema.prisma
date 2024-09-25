@@ -30,13 +30,22 @@ model Task {
   taskName    String
   description String?
   completed   Boolean   @default(false)
-  priority    Priority  @default(LOW)  // Added priority field
+  status      Status    @default(Todo)
+  priority    Priority  @default(Low)  // Added priority field
   category    Category  @relation(fields: [categoryId], references: [id]) 
 }
 
 // Enum for task priority
 enum Priority {
-  LOW
-  MEDIUM
-  HIGH
+  Low
+  Medium
+  High
+}
+
+enum Status {
+  Todo
+  InProgress
+  Done
+  Backlog
+  Canceled
 }

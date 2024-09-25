@@ -29,9 +29,9 @@ export default function DasahboardLayout({
     <html>
       <body>
         <Suspense fallback={<Loading />}>
-          <div className='flex h-screen'>
+          <div className='flex min-h-screen'>
             <Sidebar userid={session?.user.id} username={session?.user.username}/>
-            <div className="flex w-full bg-gray-300">
+            <div className="flex-1 w-full  ml-64 bg-gray-300">
               {children}
             </div>
             <Toaster></Toaster>

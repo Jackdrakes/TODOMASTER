@@ -7,8 +7,8 @@ import Link from "next/link";
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-800 via-gray-700 to-zinc-800 text-white">
-      <nav className="container mx-auto py-6 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">TodoMaster</h1>
+      <nav className="container mx-auto py-6 flex flex-col md:flex-row justify-between items-center">
+        <h1 className="text-2xl font-bold md:mb-0">TodoMaster</h1>
         <div className="space-x-4">
           <Button variant="ghost">Features</Button>
           <Button variant="ghost">Pricing</Button>
@@ -19,8 +19,8 @@ const LandingPage = () => {
       </nav>
 
       <main className="container mx-auto mt-20 text-center">
-        <h2 className="text-5xl font-extrabold mb-6">Manage Your Tasks with Ease</h2>
-        <p className="text-xl mb-10 text-gray-300">Stay organized, boost productivity, and achieve your goals with TodoMaster</p>
+        <h2 className="text-4xl md:text-5xl font-extrabold mb-6">Manage Your Tasks with Ease</h2>
+        <p className="text-lg md:text-xl mb-10 text-gray-300">Stay organized, boost productivity, and achieve your goals with TodoMaster</p>
         <Link href="/auth/sign-up">
           <Button size="lg" className="bg-blue-600 hover:bg-blue-700">Get Started for Free</Button>
         </Link>
