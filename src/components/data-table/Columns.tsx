@@ -59,36 +59,7 @@ export const columns= (onDeleteTask: (id:string) =>Promise<void>): ColumnDef<Tas
     ),
     cell: ({ row }) => 
   
-      (
-
-        <TaskCheckbox row={row} />
-
-      // <Checkbox
-      //   checked={checkedState}
-      //   onCheckedChange={async(value) => {
-      //     row.original.completed = !!value
-      //     setCheckedState(!!value)
-      //     row.toggleSelected(!!value)
-      //     try {
-      //       const response = await fetch(`/api/tasks/${row.original.id}`,{
-      //         method: 'PATCH',
-      //         headers:{
-      //           "Content-Type": "application/json"
-      //         },
-      //         body: JSON.stringify({completed: !!value }) // !taskToUpdate?.completed
-      //       })
-      
-      //       if(!response.ok){
-      //         throw new Error('Failed to updated completion status of the task')
-      //       }
-      //     } catch (error) {
-      //       console.log(error)
-      //     }
-      //   }}
-      //   aria-label="Select row"
-      //   className="translate-y-[2px]"
-      // />
-    ),
+      ( <TaskCheckbox row={row} /> ),
     enableSorting: false,
     enableHiding: false,
   },
