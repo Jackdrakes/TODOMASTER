@@ -25,13 +25,15 @@ const LandingPage = () => {
           <Button size="lg" className="bg-blue-600 hover:bg-blue-700">Get Started for Free</Button>
         </Link>
 
-        <div className="mt-20">
+        <div className="mt-20 ">
           <Image 
             src="/images/dashboard.png"  
             alt="TodoMaster Dashboard"
             width={1200}  
             height={800}  
-            className="rounded-lg shadow-2xl mx-auto" 
+            layout="responsive"
+            className="rounded-lg object-cover shadow-2xl mx-auto" 
+            priority
           />
         </div>
 

@@ -1,7 +1,6 @@
 'use client'
 import * as React from "react"
 import {
-  CellContext,
   ColumnDef,
   ColumnFiltersState,
   SortingState,
@@ -26,11 +25,8 @@ import {
 
 import { DataTableToolbar } from "@/components/data-table/Tool-bar"
 import { Task } from "@/types/types"
+import TaskForm from "@/components/AddTaskForm"
 
-// // Define a custom context that includes onDeleteTask
-// interface CustomCellContext<T> extends CellContext<T, unknown> {
-//   onDeleteTask: (id: string) => Promise<void>;
-// }
 
 interface DataTableProps<TData extends Task, TValue> {
   columns: (onDeleteTask: (id:string) =>Promise<void>) => ColumnDef<TData, any>[];
@@ -87,9 +83,13 @@ export function DataTable<TData extends Task, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
+  const handleCallback = (updatedTask: Task) => {
+    setTasks((prevTasks)=>[...prevTasks, updatedTask]) 
+  }
 
   return (
     <div className="space-y-4">
+      <TaskForm taskCallback={handleCallback}/>
       <DataTableToolbar table={table} />
       <div className="rounded-md border overflow-auto">
         <Table>

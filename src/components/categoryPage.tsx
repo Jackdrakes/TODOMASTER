@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { DataTable } from "@/components/data-table/TaskDataTable"
 import { Task } from "@/types/types";
 import { columns } from "@/components/data-table/Columns";
-import TaskForm from "@/components/AddTaskForm";
 
 const defaultasks = [
     { id: "TASK-8782", taskName: "string", description: "You can't compress the program without quantifying the open-source SSD...", status: "In Progress", completed: true },
@@ -39,28 +38,9 @@ export function CategoryPages({categoryId}: {categoryId?: string}) {
         fetchTasks();
     }, [categoryId,]);
 
-    // const handleDeleteTask = async (id: string) => {
-    //     try{
-    //       setTasks((prevTasks) => {
-    //         const newTasks = prevTasks.filter((task) => task.id !== id);
-    //         console.log("Updated Tasks: ", newTasks); // Log updated tasks
-    //         return newTasks;
-    //       });
-    //       console.log('demopage delete function')
-    //     } catch (error){
-    //       console.log(error)
-    //     }   
-    // };
-
-    const handleCallback = (updatedTask: Task) => {
-      setTasks((prevTasks)=>[...prevTasks, updatedTask]) 
-    }
-
     return(
       <div>
-        <TaskForm taskCallback={handleCallback}/>
         {loading ? (<div></div>) : (<DataTable columns={columns} data={Tasks}/>) }
-        
       </div>
     )
 }

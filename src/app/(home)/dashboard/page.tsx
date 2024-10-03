@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 import { authOptions } from '@/lib/auth';
 import { TasksTable } from '@/components/TasksTable';
 
-const Page = async() => {
+const DashboardPage = async() => {
 
   const session = await getServerSession(authOptions);
 
@@ -19,4 +19,4 @@ const Page = async() => {
   );
 }
 
-export default Page
+export default DashboardPage
