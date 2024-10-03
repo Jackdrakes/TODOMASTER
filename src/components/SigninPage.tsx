@@ -10,6 +10,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Loading from '@/app/(home)/loading';
+import Link from 'next/link';
 
 const SignInPage = () => {
   const [email, setEmail] = useState('');
@@ -78,7 +79,7 @@ const SignInPage = () => {
             {error && <p className="text-red-500 text-center mt-2">{error}</p>}
             
             <p className="text-center mt-4 text-gray-400">
-              Haven&lsquo;t joined our task-taming team yet? Get on board and <a href="/signup" className="text-blue-400 underline">sign up</a>! Your to-do list will thank you.
+              Haven&lsquo;t joined our task-taming team yet? Get on board and <Link href="/auth/sign-up" className="text-blue-400 font-semibold underline">sign up</Link>! Your to-do list will thank you.
             </p>
           </div>
         </CardContent>

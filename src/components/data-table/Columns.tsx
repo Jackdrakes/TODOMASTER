@@ -8,41 +8,6 @@ import { Task } from "@/types/types"
 import { ColumnDef, Row } from "@tanstack/react-table"
 import { useState } from "react"
 
-const TaskCheckbox = ({ row }: {row: Row<Task>}) => {
-  const [checkedState, setCheckedState] = useState(row.original.completed);
-
-  const handleCheckedChange = async (value: boolean) => {
-    row.original.completed = !!value;
-    setCheckedState(!!value);
-    row.toggleSelected(!!value);
-    try {
-      const response = await fetch(`/api/tasks/${row.original.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ completed: !!value }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to updated completion status of the task");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  return (
-    <Checkbox
-      checked={checkedState}
-      onCheckedChange={handleCheckedChange}
-      aria-label="Select row"
-      className="translate-y-[2px]"
-    />
-  );
-};
-
-
 export const columns= (onDeleteTask: (id:string) =>Promise<void>): ColumnDef<Task>[] => [ 
   {
     id: "id",
@@ -68,8 +33,8 @@ export const columns= (onDeleteTask: (id:string) =>Promise<void>): ColumnDef<Tas
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Task" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("taskName")}</div>,
-    // enableSorting: false,
+    cell: ({ row }) => <div className="w-[80px] font-medium">{row.getValue("taskName")}</div>,
+    enableSorting: false,
     enableHiding: false,
   },
   {
@@ -83,7 +48,7 @@ export const columns= (onDeleteTask: (id:string) =>Promise<void>): ColumnDef<Tas
       return (
         <div className="flex space-x-2">
           {/* {label && <Badge variant="outline">{label.label}</Badge>} */}
-          <span className="max-w-[500px] truncate font-medium">
+          <span className="max-w-[500px] truncate ">
             {row.getValue("description")}
           </span>
         </div>
@@ -146,6 +111,42 @@ export const columns= (onDeleteTask: (id:string) =>Promise<void>): ColumnDef<Tas
   },
   {
     id: "actions",
-    cell: ({ row} ) => <DataTableRowActions row={row} onDeleteTask={onDeleteTask}    />, // onDeleteTask={onDeleteTask}  
+    cell: ({ row} ) => <DataTableRowActions row={row} onDeleteTask={onDeleteTask}    />, 
   },
 ]
+
+
+
+const TaskCheckbox = ({ row }: {row: Row<Task>}) => {
+  const [checkedState, setCheckedState] = useState(row.original.completed);
+
+  const handleCheckedChange = async (value: boolean) => {
+    row.original.completed = !!value;
+    setCheckedState(!!value);
+    row.toggleSelected(!!value);
+    try {
+      const response = await fetch(`/api/tasks/${row.original.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ completed: !!value }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to updated completion status of the task");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Checkbox
+      checked={checkedState}
+      onCheckedChange={handleCheckedChange}
+      aria-label="Select row"
+      className="translate-y-[2px]"
+    />
+  );
+};

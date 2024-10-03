@@ -1,44 +1,39 @@
 // app/(home)layout.tsx
-'use client'
+// 'use client'
 import { Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import Loading from '@/app/(home)/loading';
 import Sidebar from '@/components/Sidebar';
 import { Toaster } from "@/components/ui/toaster";
+import { authOptions } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
 
 
-export default function DasahboardLayout({
+export default async function DasahboardLayout({
     children,
   }: Readonly<{
     children: React.ReactNode;
   }>)  {
 
-    const { data: session, status } = useSession()
+    const session = await getServerSession(authOptions)
 
-    if (status === "loading") {
-      return <Loading/>
-    }
-    
-    if (status === "unauthenticated") {
-      redirect("/auth/sign-in"); 
+    if(!session || !session.user){
+      redirect("/auth/sign-in")
     }
 
   
   return (
-    <html>
-      <body>
-        <Suspense fallback={<Loading />}>
-          <div className='flex min-h-screen'>
-            <Sidebar userid={session?.user.id} username={session?.user.username}/>
-            <div className="flex-1 w-full  ml-64 bg-gray-300">
-              {children}
+        <>
+          <Suspense fallback={<Loading />}>
+            <div className='flex min-h-screen'>
+              <Sidebar userid={session?.user.id} username={session?.user.username}/>
+              <div className="flex-1 w-full  ml-64 bg-gray-300">
+                {children}
+              </div>
+              <Toaster></Toaster>
             </div>
-            <Toaster></Toaster>
-          </div>
-        </Suspense>
-
-      </body>
-    </html>
+          </Suspense>
+        </>
   );
 }

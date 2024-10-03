@@ -14,7 +14,7 @@ const fetchTasks = async():Promise<Task[]> =>{
 }
 
 
-export default function DemoPage() {
+const DemoPage = () => {
 
   const [Tasks, setTasks] = React.useState<Task[]>([])
 
@@ -53,3 +53,5 @@ export default function DemoPage() {
     </div>
   )
 }
+
+export default DemoPage

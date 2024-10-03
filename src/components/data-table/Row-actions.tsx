@@ -55,6 +55,11 @@ const handleDeleteTask = async (e: React.MouseEvent) => {
   })
 }
 
+const handleEditTask = () =>{
+
+  
+}
+
 
 return (
   <DropdownMenu>
@@ -68,7 +73,7 @@ return (
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" className="w-[160px]">
-      <DropdownMenuItem>Edit</DropdownMenuItem>
+      <DropdownMenuItem onClick={handleEditTask}>Edit</DropdownMenuItem>
       {/* <DropdownMenuItem>Make a copy</DropdownMenuItem> */}
       {/* <DropdownMenuItem>Favorite</DropdownMenuItem> */}
       {/* <DropdownMenuSeparator /> */}
