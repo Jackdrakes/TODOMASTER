@@ -12,8 +12,8 @@ import { toast } from "@/hooks/use-toast";
 
 
 
-const defaultasks = [
-  { id: "TASK-8782", taskName: "string", description: "You can't compress the program without quantifying the open-source SSD...", status: "In Progress", completed: true },
+const defaultasks: Task[] = [
+  { id: "TASK-8782", taskName: "string", description: "You can't compress the program without quantifying the open-source SSD...", status: "InProgress", completed: true },
   { id: "TASK-7878", taskName: "string", description: "Try to calculate the EXE feed, maybe it will index the multi-byte pixel!", status: "Backlog",completed: false, },
 ]
 
