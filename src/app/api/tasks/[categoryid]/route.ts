@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
-
+// get all tasks
 export async function GET(request:NextRequest, {params}: {params: { categoryid: string}} ) {
 
     const {categoryid} = params
@@ -26,6 +26,7 @@ export async function GET(request:NextRequest, {params}: {params: { categoryid: 
     }
 }
 
+// create tasks
 export async function POST(req: NextRequest, ){
 
     const {taskName, description, priority, categoryid} = await req.json()
@@ -49,6 +50,7 @@ export async function POST(req: NextRequest, ){
     }
 }
 
+// selected task
 export async function PATCH(request: NextRequest, {params}: {params:{categoryid: string}}) {
     const taskid = params.categoryid
     try {      
@@ -62,7 +64,7 @@ export async function PATCH(request: NextRequest, {params}: {params:{categoryid:
             return NextResponse.json({error: "Task not Found"}, {status: 400})
         }
 
-        const updatedTask = await prisma.task.update({
+        const selectedtask = await prisma.task.update({
             where: {
                 id: taskid,
             },
@@ -78,6 +80,33 @@ export async function PATCH(request: NextRequest, {params}: {params:{categoryid:
     }
 }
 
+// update entire row
+export async function PUT(request: NextRequest, {params}: {params: {categoryid:string}}) {
+    const taskid = params.categoryid
+
+    const taskData = await  request.json()
+    console.log("status", taskData.Status)
+    try {
+        
+        const updateTask = await prisma.task.update({
+            where: { id: taskid},
+            data:{
+                taskName: taskData.taskName,
+                description: taskData.description,
+                priority: taskData.priority,
+                status: taskData.Status,
+            }
+        })
+
+        return NextResponse.json(updateTask, {status: 200})
+        
+    } catch (error) {
+        console.log(error)
+        return NextResponse.json({error: ''}, {status: 500})
+    }
+}
+
+// delete task 
 export async function DELETE(request: NextRequest,{params}: {params:{categoryid:string}}) {
     const taskid = params.categoryid
 

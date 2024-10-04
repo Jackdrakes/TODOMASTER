@@ -45,6 +45,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
     fetchTasks();
   }, [categoryId,]);
 
+  // handle deletetask function
   const handleDeleteTask = async (id: string) => {
     try {
       const response = await fetch(`/api/tasks/${id}`, {
@@ -65,7 +66,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
     })
   }
   
-
+  //  handle the checkboxes
   const handleCheckboxChange = async (taskId: string) => {
 
     const taskToUpdate = Tasks.find((task)=> task.id === taskId)
@@ -92,7 +93,8 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
       console.log(error)
     }
   };
-
+  
+  // Add new task in ui
   const handleCallback = (updatedTask: Task) => {
     setTasks((prevTasks)=>[...prevTasks, updatedTask]) 
   }

@@ -4,9 +4,9 @@ import { DataTable } from "@/components/data-table/TaskDataTable"
 import { Task } from "@/types/types";
 import { columns } from "@/components/data-table/Columns";
 
-const defaultasks = [
-    { id: "TASK-8782", taskName: "string", description: "You can't compress the program without quantifying the open-source SSD...", status: "In Progress", completed: true },
-    { id: "TASK-7878", taskName: "string", description: "Try to calculate the EXE feed, maybe it will index the multi-byte pixel!", status: "Backlog",completed: false, },
+const defaultasks: Task[] = [
+    { id: "TASK-8782", taskName: "string", description: "You can't compress the program without quantifying the open-source SSD...", status: "Todo", completed: true },
+    { id: "TASK-7878", taskName: "string", description: "Try to calculate the EXE feed, maybe it will index the multi-byte pixel!", status: "Todo",completed: false, },
   ]
 
 export function CategoryPages({categoryId}: {categoryId?: string}) {

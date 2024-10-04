@@ -10,7 +10,10 @@ export interface Session {
     expires: string;
 }
 
-export type Priority = 'LOW' | 'MEDIUM' | 'HIGH';
+export type Priority = 'Low' | 'Medium' | 'High';
+
+export type Status =  "Todo" | "InProgress" | "Done" | "Backlog" | "Canceled";
+
 
 export interface Category {
     id: string;
@@ -22,7 +25,7 @@ export interface Task {
     id: string;
     taskName: string;
     title?: string;
-    status: string;
+    status: "Todo" | "InProgress" | "Done" | "Backlog" | "Canceled";
     description: string;
     priority?: "Low"| "Medium" | "High";
     completed: boolean
