@@ -4,11 +4,14 @@ import { DataTableColumnHeader } from "@/components/data-table/Column-header"
 import { DataTableRowActions } from "@/components/data-table/Row-actions"
 
 import { Checkbox } from "@/components/ui/checkbox"
-import { Task } from "@/types/types"
+import { Task, Priority, Status } from "@/types/types"
 import { ColumnDef, Row } from "@tanstack/react-table"
 import { useState } from "react"
 
-export const columns= (onDeleteTask: (id:string) =>Promise<void>): ColumnDef<Task>[] => [ 
+export const columns= (
+  onDeleteTask: (id:string) =>Promise<void>, 
+  onEditTask:(id: string, taskName: string, description: string, priority: Priority, status: Status, ) =>Promise<void>,
+): ColumnDef<Task>[] => [ 
   {
     id: "id",
     header: ({ table }) => (
@@ -111,7 +114,7 @@ export const columns= (onDeleteTask: (id:string) =>Promise<void>): ColumnDef<Tas
   },
   {
     id: "actions",
-    cell: ({ row} ) => <DataTableRowActions row={row} onDeleteTask={onDeleteTask}    />, 
+    cell: ({ row} ) => <DataTableRowActions row={row} onDeleteTask={onDeleteTask}  onEditTask={onEditTask}   />, 
   },
 ]
 

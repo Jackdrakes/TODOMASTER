@@ -82,7 +82,7 @@ export default function Sidebar({username, userid}: TodoDashboardProps)  {
         </div>
       </div> */}
 
-      <nav>
+      <nav className='px-2'>
         {data && data.map((item, index) => {
         const IconComponent = iconMap[item.categoryIcon]; 
         return (  
@@ -96,7 +96,7 @@ export default function Sidebar({username, userid}: TodoDashboardProps)  {
       </nav>
 
       {/* Workspaces Section */}
-      {/* <div className="mt-6 px-4">
+      <div className="mt-6 px-4">
         <h2 className="text-gray-300 flex text-sm font-semibold mb-2 items-center justify-between">Workspaces <Plus className='w-4 h-4'/></h2>
         
         <div>
@@ -110,7 +110,7 @@ export default function Sidebar({username, userid}: TodoDashboardProps)  {
             </a>
           ))}
         </div>
-      </div> */}
+      </div>
 
     </div>
   )

@@ -12,8 +12,8 @@ import { toast } from "@/hooks/use-toast";
 
 
 
-const defaultasks = [
-  { id: "TASK-8782", taskName: "string", description: "You can't compress the program without quantifying the open-source SSD...", status: "In Progress", completed: true },
+const defaultasks: Task[] = [
+  { id: "TASK-8782", taskName: "string", description: "You can't compress the program without quantifying the open-source SSD...", status: "InProgress", completed: true },
   { id: "TASK-7878", taskName: "string", description: "Try to calculate the EXE feed, maybe it will index the multi-byte pixel!", status: "Backlog",completed: false, },
 ]
 
@@ -45,6 +45,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
     fetchTasks();
   }, [categoryId,]);
 
+  // handle deletetask function
   const handleDeleteTask = async (id: string) => {
     try {
       const response = await fetch(`/api/tasks/${id}`, {
@@ -65,7 +66,7 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
     })
   }
   
-
+  //  handle the checkboxes
   const handleCheckboxChange = async (taskId: string) => {
 
     const taskToUpdate = Tasks.find((task)=> task.id === taskId)
@@ -92,7 +93,8 @@ export function TasksTable({categoryId}: {categoryId?: string}) {
       console.log(error)
     }
   };
-
+  
+  // Add new task in ui
   const handleCallback = (updatedTask: Task) => {
     setTasks((prevTasks)=>[...prevTasks, updatedTask]) 
   }

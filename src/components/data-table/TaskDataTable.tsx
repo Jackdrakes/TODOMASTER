@@ -24,12 +24,14 @@ import {
 } from "@/components/ui/table"
 
 import { DataTableToolbar } from "@/components/data-table/Tool-bar"
-import { Task } from "@/types/types"
+import { Priority, Status, Task } from "@/types/types"
 import TaskForm from "@/components/AddTaskForm"
 
 
 interface DataTableProps<TData extends Task, TValue> {
-  columns: (onDeleteTask: (id:string) =>Promise<void>) => ColumnDef<TData, any>[];
+  columns: (
+    onDeleteTask: (id:string) =>Promise<void>,
+    onEditTask:(id: string, taskName: string, description: string, priority: Priority, status: Status, ) =>Promise<void>,) => ColumnDef<TData, any>[];
   data: TData[];  
 }
 
@@ -49,7 +51,7 @@ export function DataTable<TData extends Task, TValue>({
 
   
 
-  const handleDeleteTask = async (id: string) => {
+  const handleDeleteTask = async (id: string) =>{
     try{
       setTasks((prevTasks) => {
         const newTasks = prevTasks.filter((task) => task.id !== id);
@@ -60,7 +62,17 @@ export function DataTable<TData extends Task, TValue>({
     }   
   };
 
-  const tabecolumns = columns(handleDeleteTask) as Task[]
+  const handleEditTask = async(id: string, taskName: string, description: string, priority: Priority, status: Status) =>{
+    setTasks((prevTasks) => {
+      const index = prevTasks.findIndex((task) => id === task.id);
+      if (index !== -1) {
+        prevTasks[index] = { ...prevTasks[index], taskName, description, priority, status };
+      }
+      return [...prevTasks,];
+    });
+  }
+
+  const tabecolumns = columns(handleDeleteTask, handleEditTask) as Task[]
 
   const table = useReactTable({
     data: Tasks,
